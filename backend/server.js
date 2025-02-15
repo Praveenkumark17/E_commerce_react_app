@@ -19,7 +19,7 @@ app.use('/images', express.static('images'));
 app.use("/api/auth", router);
 
 app.listen(5000, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port 5000`);
   console.log(`App URL: ${APP_URL}`);
 });
 
