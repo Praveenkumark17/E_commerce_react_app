@@ -1,0 +1,198 @@
+:root{
+    --primary-color: #3b1e54;
+}
+.fotter {
+    box-shadow: 0 1px 10px black;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 70vh 3vh;
+  }
+  .footer_cont {
+    display: grid;
+    grid-template-rows: 30vh 30vh 10vh;
+    grid-template-columns: repeat(4, 1fr);
+    background-color: #eeeeee;
+  }
+  .securepay,
+  .trustpay,
+  .help,
+  .app {
+    height: 30vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 15vh 5vh 10vh;
+  }
+  .footlog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    color: var(--primary-color);
+  }
+  .foothead {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--primary-color);
+  }
+  .foottext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 70%;
+    margin: 0 15%;
+    font-size: 15px;
+    color: var(--primary-color);
+  }
+  .securepay {
+    border-right: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    border-top: 2px solid var(--primary-color);
+  }
+  .trustpay {
+    border-right: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    border-top: 2px solid var(--primary-color);
+  }
+  .help {
+    border-right: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    border-top: 2px solid var(--primary-color);
+  }
+  .app {
+    border-bottom: 2px solid var(--primary-color);
+    border-top: 2px solid var(--primary-color);
+  }
+  .info,
+  .company,
+  .business,
+  .applogo {
+    height: 30vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 7vh 23vh;
+  }
+  .foot_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--primary-color);
+    /* text-decoration: underline 1px black; */
+  }
+  .foot_cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 13px;
+    line-height: 21px;
+  }
+  .foot_cont a {
+    text-decoration: none;
+    color: var(--primary-color);
+  }
+  .foot_cont a:hover {
+    text-decoration: underline;
+  }
+  .foot_play {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 94%;
+    height: 94%;
+    margin: 0 3%;
+  }
+  .foot_img {
+    height: 100%;
+    width: 100%;
+    background-image: url(../../assets/images/Logos/google.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+  }
+  .payment {
+    grid-column: 1/3;
+    display: grid;
+    grid-template-rows: 3vh 7vh;
+  }
+  .social {
+    grid-column: 3/5;
+    display: grid;
+    grid-template-rows: 3vh 7vh;
+  }
+  .logtitle {
+    width: 85%;
+    margin: 0 7.5%;
+    font-size: 18px;
+    color: var(--primary-color);
+  }
+  .logs {
+    width: 85%;
+    margin: 0 7.5%;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+  }
+  .logs i {
+    margin-right: 10px;
+    color: var(--primary-color);
+    cursor: pointer;
+  }
+  .cashon {
+    margin-right: 10px;
+    height: 26px;
+    /* width: 50px; */
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 10px 40px;
+    grid-template-rows: 13px;
+  }
+  .neton {
+    margin-right: 10px;
+    height: 26px;
+    /* width: 60px; */
+    padding: 0 10px;
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 20px 20px;
+    grid-template-rows: 13px;
+  }
+  .cash1 {
+    font-size: 9px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .cash2 {
+    font-size: 9px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .symbol {
+    grid-row: 1/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+  .copyright {
+    background-color: var(--primary-color);
+    color: #eeeeee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+  }
+  .copyright i {
+    margin: 0 0.5vw;
+  }

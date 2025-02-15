@@ -1,0 +1,35 @@
+.head{
+    height: 60px;
+    background-color: #BCCCDC;
+    border-radius: 10px;
+}
+
+.head > p{
+    color: #0F1035;
+}
+
+.content{
+    background-color: white;
+    border-radius: 10px;
+}
+
+.img{
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+    background-color: gray;
+}
+
+.table{
+    overflow-y: scroll ;
+    scrollbar-width: none;
+    max-height: 73vh;
+    display: block;
+}
+.table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+    padding-top: 15px;
+}

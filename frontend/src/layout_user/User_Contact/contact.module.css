@@ -1,0 +1,34 @@
+.row{
+    width: 90%;
+}
+.cont{
+    background-color: rgb(226, 228, 229);
+    padding: 50px 0;
+    border-radius: 15px;
+}
+.input{
+    width: 100%;
+    outline: none;
+    border: 2px solid #6702bf;
+    height: 50px;
+    margin-top: 20px;
+    border-radius: 5px;
+    padding-left: 10px;
+    background-color: #dab4fb;
+    color: gray;
+    font-weight: 500;
+}
+.input::placeholder{
+    color: rgb(115, 114, 114);
+}
+.btn{
+    margin-left: 6%;
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    width: 70px;
+    background-color: #6702bf;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}

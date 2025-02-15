@@ -1,0 +1,34 @@
+.body{
+    height: 100%;
+    background-image: url('../../assets/images/admin_home.jpg');
+    background-position: center;
+    background-size: cover;
+    border-radius: 10px;
+    display: flex;
+}
+.box1{
+    width: 60%;
+    margin-top: 10%;
+}
+.title{
+    padding: 0 10%;
+    color: #0F1035;
+}
+.menus{
+    height: 60%;
+    margin-top: 10%;
+    padding: 0 10%;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+}
+
+.boxes{
+    height: 60%;
+    border:3px solid #0F1035;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

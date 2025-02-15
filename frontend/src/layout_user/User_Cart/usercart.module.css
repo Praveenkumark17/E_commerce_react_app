@@ -1,0 +1,130 @@
+.cart{
+    background-color: rgb(234, 230, 230);
+    padding: 0 20px;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+.carttitle{
+    color: #6702bf;
+}
+.contact{
+    background-color: rgb(234, 230, 230);
+    padding: 0 20px;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+.con button{
+    border: none;
+    margin: 20px;
+    background-color: #6702bf;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+.conlist{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+}
+.conlist div{
+    background-color: #c9c7c7;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px 40px;
+    gap: 5px;
+    cursor: pointer;
+}
+.conactive{
+    border: 2px solid #6702bf;
+}
+.button{
+    border: none;
+    background-color: #6702bf;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+/* styles.css */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.thead{
+    background-color: #6702bf;
+    color: white;
+  
+}
+.table th{
+    padding: 10px 20px;
+}
+.table td{
+    padding: 20px;
+}
+
+.table th, .table td {
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+.table th:first-child, .table td:first-child {
+    border-left: none; /* Remove left border for the first column */
+}
+
+.table th:last-child, .table td:last-child {
+    border-right: none; /* Remove right border for the last column */
+}
+
+.table tr:first-child th {
+    border-top: none; /* Remove top border for the first row */
+}
+
+.table tr:last-child td {
+    border-bottom: none; 
+}
+.table tr:last-child td {
+    border-bottom: none; 
+}
+.cartimg{
+    height: 100px;
+    width: 100px;
+    border-radius: 7px;
+}
+
+.qutbtn1{
+    height: 30px;
+    width: 30px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: red;
+}
+.qutbtn2{
+    height: 30px;
+    width: 30px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: green;
+}
+.qutinput{
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: aliceblue;
+    font-size: larger;
+    font-weight: 500;
+    user-select: none;
+}

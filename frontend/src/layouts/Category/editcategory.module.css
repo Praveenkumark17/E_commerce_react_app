@@ -1,0 +1,17 @@
+.head{
+    height: 60px;
+    background-color: #BCCCDC;
+    border-radius: 10px;
+}
+
+.content{
+    background-color: #fbfbfb;
+    border-radius: 10px;
+}
+
+.img{
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
