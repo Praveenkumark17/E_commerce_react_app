@@ -6,7 +6,7 @@
       "use": "@vercel/node"
     },
     {
-      "src": "/images/profile/(.*)",
+      "src": "/images/(.*)",
       "dest": "/images/$1"
     }
   ],
