@@ -12,7 +12,7 @@ const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 
 const corsOptions = {
   origin: APP_URL, 
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  methods: 'GET,PUT,POST,DELETE',
   credentials: true,
 };
 
