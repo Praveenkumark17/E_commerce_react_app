@@ -3,7 +3,7 @@ import express from "express";
 import connectDB from "./config/db.js";
 import cors from "cors";
 import router from "./router/authRouter.js";
-// import bodyParser from "body-parser";
+import bodyParser from "body-parser";
 
 config();
 const app = express();
@@ -18,7 +18,7 @@ const corsOptions = {
 
 app.use(express.json());
 app.use(cors(corsOptions));
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 connectDB();
 
 app.use('/images', express.static('images'));
