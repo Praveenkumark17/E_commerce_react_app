@@ -9,19 +9,19 @@ config();
 const app = express();
 
 const APP_URL = process.env.APP_URL || 'http://localhost:3000';
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(cors({origin:APP_URL,methods:'GET,HEAD,PUT,PATCH,POST,DELETE'}));
+app.use(cors({ origin: APP_URL, methods: 'GET,HEAD,PUT,PATCH,POST,DELETE' }));
 app.use(bodyParser.json());
 connectDB();
 
-app.use('/images',express.static('images'))
+app.use('/images', express.static('images'));
 app.use("/api/auth", router);
 
-
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running in port ${process.env.PORT}`);
-  console.log(`App running in port ${process.env.APP_URL}`);
+  console.log(`Server running on port ${PORT}`);
+  console.log(`App URL: ${APP_URL}`);
 });
+
 
