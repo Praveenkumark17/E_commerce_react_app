@@ -38,16 +38,30 @@ export default function Login() {
         }
       })
       .catch((error) => {
-        console.error("There was an error logging in:", error);
-        toast.error(error.response.data.message, {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "dark",
-          transition: Slide,
-        });
+        if (!error.response) {
+          // Network error
+          toast.error("Server error. Please try again later.", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "dark",
+            transition: Slide,
+          });
+        } else {
+          // Other errors
+          console.error("There was an error logging in:", error);
+          toast.error(error.response.data.message, {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "dark",
+            transition: Slide,
+          });
+        }
       });
   };
 
