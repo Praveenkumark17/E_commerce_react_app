@@ -10,8 +10,14 @@ const app = express();
 
 const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 
+const corsOptions = {
+  origin: APP_URL, 
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
+
 app.use(express.json());
-app.use(cors({ origin: APP_URL, methods: 'GET,HEAD,PUT,PATCH,POST,DELETE' }));
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 connectDB();
 
