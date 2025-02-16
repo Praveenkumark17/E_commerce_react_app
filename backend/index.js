@@ -8,11 +8,14 @@ import bodyParser from "body-parser";
 config();
 const app = express();
 
-app.options('*', (req, res) => {
+app.use((req, res, next) => {
   const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.sendStatus(204);
+  }
+  next();
 });
 
 const allowedOrigins = [process.env.APP_URL || 'http://localhost:3000'];
@@ -30,6 +33,10 @@ const corsOptions = {
   optionsSuccessStatus: 200,
   allowedHeaders: ['Content-Type', 'Authorization']
 };
+
+app.options('*', cors(corsOptions), (req, res) => {
+  res.sendStatus(204);
+});
 
 
 app.use(cors(corsOptions));
