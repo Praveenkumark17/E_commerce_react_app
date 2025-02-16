@@ -26,7 +26,7 @@ connectDB();
 app.use('/images', express.static('images'));
 app.use("/api/auth", router);
 
-app.options('/login', (req, res, next) => {
+app.options(APP_URL, (req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
