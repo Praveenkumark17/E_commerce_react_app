@@ -26,7 +26,10 @@ connectDB();
 app.use('/images', express.static('images'));
 app.use("/api/auth", router);
 
-app.options('*', cors(corsOptions));
+app.options('*', function(req,res,next){
+  res.header('Access-Control-Allow-Origin',req.headers.origin);
+  res.sendStatus(204);
+});
 
 app.listen(5000, () => {
   console.log(`Server running on port 5000`);
