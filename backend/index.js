@@ -17,14 +17,16 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-app.use(express.json());
+
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.use(express.json());
 app.use(bodyParser.json());
 connectDB();
 
 app.use('/images', express.static('images'));
 app.use("/api/auth", router);
+
+app.options('*', cors(corsOptions));
 
 app.listen(5000, () => {
   console.log(`Server running on port 5000`);
