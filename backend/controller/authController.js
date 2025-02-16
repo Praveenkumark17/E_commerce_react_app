@@ -44,6 +44,7 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  res.header('Access-Control-Allow-Origin',req.headers.origin);
   try {
     const { email, password } = req.body;
     const finduser = await user.findOne({ email });
