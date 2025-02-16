@@ -8,6 +8,12 @@ import bodyParser from "body-parser";
 config();
 const app = express();
 
+app.options('*', (req, res) => {
+  const origin = req.headers.origin;
+    res.header('Access-Control-Allow-Origin', origin);
+    res.sendStatus(204);
+});
+
 const allowedOrigins = [process.env.APP_URL || 'http://localhost:3000'];
 
 const corsOptions = {
@@ -31,12 +37,6 @@ connectDB();
 
 app.use('/images', express.static('images'));
 app.use("/api/auth", router);
-
-app.options('*', (req, res) => {
-  const origin = req.headers.origin;
-    res.header('Access-Control-Allow-Origin', origin);
-    res.sendStatus(204);
-});
 
 app.listen(5000, () => {
   console.log(`Server running on port 5000`);
