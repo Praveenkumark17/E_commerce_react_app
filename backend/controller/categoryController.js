@@ -1,46 +1,66 @@
 import Category from "../model/category.js";
-import multer from "multer";
-import path from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath } from 'url';
+import path from 'path';
+import multer from 'multer';
+import fs from 'fs';
+import { put } from '@vercel/blob';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const storage = multer.diskStorage({
-    destination: function (req, res, cb) {
-        cb(null, path.join(__dirname, "../images/category"));
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
-    },
-});
+const uploadDirectory = path.join(__dirname, "../images/category");
 
+// Create directory if it doesn't exist
+if (!fs.existsSync(uploadDirectory)) {
+    fs.mkdirSync(uploadDirectory, { recursive: true });
+}
+
+const storage = multer.memoryStorage();
 const uploads = multer({ storage: storage });
 
 export const addCategory = async (req, res) => {
-  uploads.single('image')(req, res, async (err) => {
-    if (err) {
-      return res.status(500).json({ message: err.message });
-    }
-    try {
-      const { brand, categoryname, description } = req.body;
-      if (!brand || !categoryname || !description) {
-      return res.status(400).json({ message: "All fields are required" });
-      }
-      const existingCategory = await Category.findOne({ categoryname });
-      if (existingCategory) {
-      return res.status(400).json({ message: "Category already exists" });
-      }
-      const newCategory = new Category({
-      brand, categoryname, description,
-      image: req.file ? req.file.filename : null,
-      });
-      await newCategory.save();
-      res.status(201).json({ message: "Category added successfully", newCategory });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  });
+    uploads.single('image')(req, res, async (err) => {
+        if (err) {
+            return res.status(500).json({ message: err.message });
+        }
+        try {
+            const { brand, categoryname, description, storeLocally } = req.body;
+            if (!brand || !categoryname || !description) {
+                return res.status(400).json({ message: "All fields are required" });
+            }
+            const existingCategory = await Category.findOne({ categoryname });
+            if (existingCategory) {
+                return res.status(400).json({ message: "Category already exists" });
+            }
+
+            let imageUrl = null;
+            if (req.file) {
+                if (storeLocally) {
+                    const fileName = Date.now() + path.extname(req.file.originalname);
+                    const filePath = path.join(uploadDirectory, fileName);
+                    fs.writeFileSync(filePath, req.file.buffer);
+                    imageUrl = `/images/category/${fileName}`;
+                } else {
+                    const imageFile = req.file;
+                    const blob = await put(`existingBlobFolder/${imageFile.originalname}`, imageFile.buffer, {
+                        access: 'public',
+                    });
+                    imageUrl = blob.url;
+                }
+            }
+
+            const newCategory = new Category({
+                brand,
+                categoryname,
+                description,
+                image: imageUrl,
+            });
+            await newCategory.save();
+            res.status(201).json({ message: "Category added successfully", newCategory });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    });
 };
 
 export const getCategorys = async (req, res) => {
@@ -67,33 +87,50 @@ export const getCategoryById = async (req, res) => {
 
 export const updateCategory = async (req, res) => {
   uploads.single('image')(req, res, async (err) => {
-    if (err) {
-      return res.status(500).json({ message: err.message });
-    }
-    try {
-      const { id } = req.params;
-      const { brand, categoryname, description } = req.body;
-      const existingCategory = await Category.findOne({ categoryname });
-      if (existingCategory && existingCategory._id.toString() !== id) {
-        return res.status(400).json({ message: "Category already exists" });
+      if (err) {
+          return res.status(500).json({ message: err.message });
       }
-      const updatedCategory = await Category.findByIdAndUpdate(
-        id,
-        {
-          brand,
-          categoryname,
-          description,
-          image: req.file ? req.file.filename : undefined,
-        },
-        { new: true }
-      );
-      if (!updatedCategory) {
-        return res.status(404).json({ message: "Category not found" });
+      try {
+          const { id } = req.params;
+          const { brand, categoryname, description, storeLocally } = req.body;
+          const existingCategory = await Category.findOne({ categoryname });
+          if (existingCategory && existingCategory._id.toString() !== id) {
+              return res.status(400).json({ message: "Category already exists" });
+          }
+
+          let imageUrl = null;
+          if (req.file) {
+              if (storeLocally) {
+                  const fileName = Date.now() + path.extname(req.file.originalname);
+                  const filePath = path.join(uploadDirectory, fileName);
+                  fs.writeFileSync(filePath, req.file.buffer);
+                  imageUrl = `/images/category/${fileName}`;
+              } else {
+                  const imageFile = req.file;
+                  const blob = await put(`existingBlobFolder/${imageFile.originalname}`, imageFile.buffer, {
+                      access: 'public',
+                  });
+                  imageUrl = blob.url;
+              }
+          }
+
+          const updatedCategory = await Category.findByIdAndUpdate(
+              id,
+              {
+                  brand,
+                  categoryname,
+                  description,
+                  image: imageUrl,
+              },
+              { new: true }
+          );
+          if (!updatedCategory) {
+              return res.status(404).json({ message: "Category not found" });
+          }
+          res.status(200).json({ message: "Category updated successfully", updatedCategory });
+      } catch (error) {
+          res.status(500).json({ message: error.message });
       }
-      res.status(200).json({ message: "Category updated successfully", updatedCategory });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
   });
 };
 

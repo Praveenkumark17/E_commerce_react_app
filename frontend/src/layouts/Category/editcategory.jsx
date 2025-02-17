@@ -194,7 +194,7 @@ export default function Editcategory() {
                       src={
                         formData.image instanceof File
                           ? URL.createObjectURL(formData.image)
-                          : `${process.env.REACT_APP_API_URL}/images/category/${formData.image}`
+                          : formData.image.startsWith('https')?`${formData.image}`:`${process.env.REACT_APP_API_URL}/images/category/${formData.image}`
                       }
                       alt="Product"
                       className={`${editcategory_style.img} mt-3`}
