@@ -184,7 +184,7 @@ export default function Admin() {
                     <div>
                       <img
                         className={admin_style.img}
-                        src={data.image.startsWith('http')?`${process.env.REACT_APP_API_URL}/images/profile/${data.image}` : `${data.image}`}
+                        src={data.image.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/profile/${data.image}`}
                         alt={"img"}
                       />
                     </div>
