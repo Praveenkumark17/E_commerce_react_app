@@ -1,8 +1,9 @@
 import user from "../model/user.js";
-import multer from "multer";
-import path from "path";
-import { fileURLToPath } from "url";
-import fs from "fs";
+import { fileURLToPath } from 'url';
+import path from 'path';
+import multer from 'multer';
+import fs from 'fs';
+import { put } from '@vercel/blob';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,15 +15,7 @@ if (!fs.existsSync(uploadDirectory)) {
     fs.mkdirSync(uploadDirectory, { recursive: true });
 }
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDirectory);
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
-    },
-});
-
+const storage = multer.memoryStorage();
 const uploads = multer({ storage: storage });
 
 export const register = async (req, res) => {
@@ -31,22 +24,44 @@ export const register = async (req, res) => {
             return res.status(500).json({ message: err.message });
         }
         try {
-            const { username,email,mobile,age,gender, password } = req.body;
+            const { username, email, mobile, age, gender, password, storeLocally } = req.body;
             if (!username || !email || !mobile || !age || !gender || !password) {
-              return res.status(400).json({ message: "All fields are required" });
-              }
+                return res.status(400).json({ message: "All fields are required" });
+            }
             const existingUser = await user.findOne({ email });
             if (existingUser) {
                 return res.status(400).json({ message: "User already exists" });
             }
+
+            let imageUrl = null;
+            if (req.file) {
+                if (storeLocally) {
+                    const fileName = Date.now() + path.extname(req.file.originalname);
+                    const filePath = path.join(uploadDirectory, fileName);
+                    fs.writeFileSync(filePath, req.file.buffer);
+                    imageUrl = `/images/profile/${fileName}`;
+                } else {
+                    const imageFile = req.file;
+                    const blob = await put(`images/profile/${imageFile.originalname}`, imageFile.buffer, {
+                        access: 'public',
+                    });
+                    imageUrl = blob.url;
+                }
+            }
+
             const newUser = new user({
-                username,email,mobile,age,gender, password,
-                image: req.file ? req.file.filename : null,
+                username,
+                email,
+                mobile,
+                age,
+                gender,
+                password,
+                image: imageUrl,
             });
             await newUser.save();
-            res.status(201).json({ message: "User registered successfully",user });
+            res.status(201).json({ message: "User registered successfully", user: newUser });
         } catch (error) {
-            res.status(500).json({ message: "Require all fields" });
+            res.status(500).json({ message: "Error registering user" });
         }
     });
 };
