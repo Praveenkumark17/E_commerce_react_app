@@ -42,7 +42,7 @@ export const addCategory = async (req, res) => {
                     imageUrl = `/images/category/${fileName}`;
                 } else {
                     const imageFile = req.file;
-                    const blob = await put(`/images/category/${imageFile.originalname}`, imageFile.buffer, {
+                    const blob = await put(`images/category/${imageFile.originalname}`, imageFile.buffer, {
                         access: 'public',
                     });
                     imageUrl = blob.url;
@@ -107,7 +107,7 @@ export const updateCategory = async (req, res) => {
                   imageUrl = `/images/category/${fileName}`;
               } else {
                   const imageFile = req.file;
-                  const blob = await put(`/images/category/${imageFile.originalname}`, imageFile.buffer, {
+                  const blob = await put(`images/category/${imageFile.originalname}`, imageFile.buffer, {
                       access: 'public',
                   });
                   imageUrl = blob.url;
