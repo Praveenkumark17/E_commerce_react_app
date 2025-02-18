@@ -15,7 +15,8 @@ if (!fs.existsSync(uploadDirectory)) {
     fs.mkdirSync(uploadDirectory, { recursive: true });
 }
 
-const storage = multer.diskStorage({
+// Disk storage for local storage
+const diskStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadDirectory);
   },
@@ -24,7 +25,12 @@ const storage = multer.diskStorage({
   }
 });
 
-const uploads = multer({ storage: storage });
+// Memory storage for Vercel Blob
+const memoryStorage = multer.memoryStorage();
+
+const uploads = multer({
+  storage: process.env.VERCEL_BLOB_ACCESS_KEY ? memoryStorage : diskStorage
+});
 
 export const register = async (req, res) => {
   uploads.single("image")(req, res, async (err) => {
@@ -42,16 +48,17 @@ export const register = async (req, res) => {
       }
 
       let imageUrl = null;
-    //   if (req.file) {
-    //     const fileName = Date.now() + path.extname(req.file.originalname);
-    //     imageUrl = `/images/profile/${fileName}`;
-    //   }
-
-      if(req.file){
-        const blob = await put(`images/profile/${req.file.originalname}`, req.file.buffer, {
+      if (req.file) {
+        const vercelBlobToken = process.env.VERCEL_BLOB_ACCESS_KEY;
+        if (!vercelBlobToken) {
+          const fileName = req.file.filename;
+          imageUrl = `/images/profile/${fileName}`;
+        } else {
+          const blob = await put(`images/profile/${req.file.originalname}`, req.file.buffer, {
             access: "public",
           });
           imageUrl = blob.url;
+        }
       }
 
       const newUser = new user({
@@ -70,6 +77,7 @@ export const register = async (req, res) => {
     }
   });
 };
+
 
 
 
