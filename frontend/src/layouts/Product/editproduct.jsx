@@ -247,7 +247,7 @@ export default function Editproduct() {
                       src={
                         formData.image instanceof File
                           ? URL.createObjectURL(formData.image)
-                          : `${process.env.REACT_APP_API_URL}/images/product/${formData.image}`
+                          : formData.image.startsWith('https')?`${formData.image}`:`${process.env.REACT_APP_API_URL}/images/product/${formData.image}`
                       }
                       alt="Product"
                       className={`${editproduct_style.img} mt-3`}
