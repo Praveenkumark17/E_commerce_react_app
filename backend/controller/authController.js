@@ -42,17 +42,16 @@ export const register = async (req, res) => {
       }
 
       let imageUrl = null;
-      if (req.file) {
-        const vercelBlobToken = process.env.VERCEL_BLOB_ACCESS_KEY;
-        if (!vercelBlobToken || vercelBlobToken === "") {
-          const fileName = Date.now() + path.extname(req.file.originalname);
-          imageUrl = `/images/profile/${fileName}`;
-        } else {
-          const blob = await put(`images/profile/${req.file.originalname}`, req.file.buffer, {
+    //   if (req.file) {
+    //     const fileName = Date.now() + path.extname(req.file.originalname);
+    //     imageUrl = `/images/profile/${fileName}`;
+    //   }
+
+      if(req.file){
+        const blob = await put(`images/profile/${req.file.originalname}`, req.file.buffer, {
             access: "public",
           });
           imageUrl = blob.url;
-        }
       }
 
       const newUser = new user({
