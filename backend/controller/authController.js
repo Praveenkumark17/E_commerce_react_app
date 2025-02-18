@@ -3,9 +3,17 @@ import { fileURLToPath } from "url";
 import path from "path";
 import multer from "multer";
 import { put } from "@vercel/blob";
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const uploadDirectory = path.join(__dirname, "../images/profile");
+
+// Create directory if it doesn't exist
+if (!fs.existsSync(uploadDirectory)) {
+    fs.mkdirSync(uploadDirectory, { recursive: true });
+}
 
 const storage = multer.memoryStorage();
 const uploads = multer({ storage: storage });
@@ -27,9 +35,10 @@ export const register = async (req, res) => {
 
       let imageUrl = null;
       if (req.file) {
-        if (storeLocally) {
+        const vercelBlobToken = process.env.VERCEL_BLOB_ACCESS_KEY;
+        if (storeLocally || !vercelBlobToken) {
           const fileName = Date.now() + path.extname(req.file.originalname);
-          const filePath = path.join(__dirname, "../images/profile", fileName);
+          const filePath = path.join(uploadDirectory, fileName);
           // Manually writing to the directory using multer memory storage
           fs.writeFileSync(filePath, req.file.buffer);
           imageUrl = `/images/profile/${fileName}`;
