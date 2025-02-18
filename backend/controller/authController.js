@@ -3,27 +3,11 @@ import { fileURLToPath } from "url";
 import path from "path";
 import multer from "multer";
 import { put } from "@vercel/blob";
-import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const uploadDirectory = path.join(__dirname, "../images/profile");
-
-// Create directory if it doesn't exist
-if (!fs.existsSync(uploadDirectory)) {
-    fs.mkdirSync(uploadDirectory, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDirectory);
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
+const storage = multer.memoryStorage();
 const uploads = multer({ storage: storage });
 
 export const register = async (req, res) => {
@@ -44,11 +28,14 @@ export const register = async (req, res) => {
       let imageUrl = null;
       if (req.file) {
         if (storeLocally) {
-          imageUrl = `/images/profile/${req.file.filename}`;
+          const fileName = Date.now() + path.extname(req.file.originalname);
+          const filePath = path.join(__dirname, "../images/profile", fileName);
+          // Manually writing to the directory using multer memory storage
+          fs.writeFileSync(filePath, req.file.buffer);
+          imageUrl = `/images/profile/${fileName}`;
         } else {
-          const imageFile = req.file;
-          const blob = await put(`images/profile/${imageFile.originalname}`, imageFile.buffer, {
-            access: 'public',
+          const blob = await put(`images/profile/${req.file.originalname}`, req.file.buffer, {
+            access: "public",
           });
           imageUrl = blob.url;
         }
@@ -70,6 +57,7 @@ export const register = async (req, res) => {
     }
   });
 };
+
 
 export const login = async (req, res) => {
   try {
