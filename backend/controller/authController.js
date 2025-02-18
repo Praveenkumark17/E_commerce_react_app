@@ -2,7 +2,6 @@ import user from "../model/user.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import multer from "multer";
-import { put } from "@vercel/blob";
 import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,7 +14,15 @@ if (!fs.existsSync(uploadDirectory)) {
     fs.mkdirSync(uploadDirectory, { recursive: true });
 }
 
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDirectory);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
 const uploads = multer({ storage: storage });
 
 export const register = async (req, res) => {
@@ -24,7 +31,7 @@ export const register = async (req, res) => {
       return res.status(500).json({ message: err.message });
     }
     try {
-      const { username, email, mobile, age, gender, password, storeLocally } = req.body;
+      const { username, email, mobile, age, gender, password } = req.body;
       if (!username || !email || !mobile || !age || !gender || !password) {
         return res.status(400).json({ message: "All fields are required" });
       }
@@ -35,19 +42,16 @@ export const register = async (req, res) => {
 
       let imageUrl = null;
       if (req.file) {
-        const vercelBlobToken = process.env.VERCEL_BLOB_ACCESS_KEY;
-        if (storeLocally || !vercelBlobToken) {
-          const fileName = Date.now() + path.extname(req.file.originalname);
-          const filePath = path.join(uploadDirectory, fileName);
-          // Manually writing to the directory using multer memory storage
-          fs.writeFileSync(filePath, req.file.buffer);
-          imageUrl = `/images/profile/${fileName}`;
-        } else {
-          const blob = await put(`images/profile/${req.file.originalname}`, req.file.buffer, {
+        // multer function
+
+        // const fileName = Date.now() + path.extname(req.file.originalname);
+        // imageUrl = `/images/profile/${fileName}`;
+
+        //vercel blob function
+        const blob = await put(`images/profile/${req.file.originalname}`, req.file.buffer, {
             access: "public",
           });
-          imageUrl = blob.url;
-        }
+        imageUrl = blob.url;
       }
 
       const newUser = new user({
