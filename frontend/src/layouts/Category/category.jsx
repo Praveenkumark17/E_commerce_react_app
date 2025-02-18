@@ -80,7 +80,7 @@ export default function Category() {
                     <td>{data.description}</td>
                     <td>
                       <img
-                        src={data.image.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/category/${data.image}`}
+                        src={data.image?.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/category/${data.image}`}
                         alt={`${data.categoryname}`}
                         className={`${category_style.img}`}
                       />

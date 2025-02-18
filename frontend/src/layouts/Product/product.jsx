@@ -83,7 +83,7 @@ export default function Product() {
                         <td>{data.quantity}</td>
                         <td>₹{data.price}</td>
                         <td>
-                            <img className={product_style.img} src={data.image.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/product/${data.image}`} alt={data.productname}/>
+                            <img className={product_style.img} src={data.image?.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/product/${data.image}`} alt={data.productname}/>
                         </td>
                         <td>
                             <Link className="btn btn-primary" onClick={()=>onEdit(data._id)} to={'/admin/edit_product'}>Edit</Link>

@@ -53,7 +53,7 @@ export const register = async (req, res) => {
         console.log(vercelBlobToken);
         if (!vercelBlobToken || vercelBlobToken === "") {
           const fileName = req.file.filename;
-          imageUrl = `/images/profile/${fileName}`;
+          imageUrl = `${fileName}`;
         } else {
           const blob = await put(`images/profile/${req.file.originalname}`, req.file.buffer, {
             access: "public",

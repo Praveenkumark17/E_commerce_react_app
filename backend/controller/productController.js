@@ -1,21 +1,36 @@
 import Product from "../model/product.js";
-import multer from "multer";
-import path from "path";
 import { fileURLToPath } from "url";
+import path from "path";
+import multer from "multer";
+import { put } from "@vercel/blob";
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const storage = multer.diskStorage({
-    destination: function (req, res, cb) {
-        cb(null, path.join(__dirname, "../images/product"));
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
-    },
+const uploadDirectory = path.join(__dirname, "../images/product");
+
+// Create directory if it doesn't exist
+if (!fs.existsSync(uploadDirectory)) {
+    fs.mkdirSync(uploadDirectory, { recursive: true });
+}
+
+// Disk storage for local storage
+const diskStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDirectory);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
 });
 
-const uploads = multer({ storage: storage });
+// Memory storage for Vercel Blob
+const memoryStorage = multer.memoryStorage();
+
+const uploads = multer({
+  storage: process.env.VERCEL_BLOB_ACCESS_KEY ? memoryStorage : diskStorage
+});
 
 export const addProduct = async (req, res) => {
   uploads.single('image')(req, res, async (err) => {
@@ -31,9 +46,24 @@ export const addProduct = async (req, res) => {
     if (existingProduct) {
       return res.status(400).json({ message: "Product already exists" });
     }
+
+    let imageUrl = null;
+            if (req.file) {
+                const vercelBlobToken = process.env.VERCEL_BLOB_ACCESS_KEY;
+                if (!vercelBlobToken || vercelBlobToken === "") {
+                    const fileName = req.file.filename;
+                    imageUrl = `${fileName}`;
+                } else {
+                    const blob = await put(`images/product/${req.file.originalname}`, req.file.buffer, {
+                        access: "public",
+                    });
+                    imageUrl = blob.url;
+                }
+            }
+
     const newProduct = new Product({
       category, productname, quantity, price, description,
-      image: req.file ? req.file.filename : null,
+      image: imageUrl,
     });
     await newProduct.save();
     res.status(201).json({ message: "Product added successfully", newProduct });
@@ -81,6 +111,21 @@ export const addProduct = async (req, res) => {
         if (duplicateProduct && duplicateProduct._id.toString() !== id) {
           return res.status(400).json({ message: "Product already exists" });
         }
+
+        let imageUrl = null;
+            if (req.file) {
+                const vercelBlobToken = process.env.VERCEL_BLOB_ACCESS_KEY;
+                if (!vercelBlobToken || vercelBlobToken === "") {
+                    const fileName = req.file.filename;
+                    imageUrl = `${fileName}`;
+                } else {
+                    const blob = await put(`images/category/${req.file.originalname}`, req.file.buffer, {
+                        access: "public",
+                    });
+                    imageUrl = blob.url;
+                }
+            }
+
         const updatedProduct = await Product.findByIdAndUpdate(
           id,
           {
@@ -89,7 +134,7 @@ export const addProduct = async (req, res) => {
             quantity,
             price,
             description,
-            image: req.file ? req.file.filename : undefined,
+            image: imageUrl,
           },
           { new: true }
         );
