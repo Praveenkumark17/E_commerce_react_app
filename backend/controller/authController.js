@@ -50,7 +50,8 @@ export const register = async (req, res) => {
       let imageUrl = null;
       if (req.file) {
         const vercelBlobToken = process.env.VERCEL_BLOB_ACCESS_KEY;
-        if (!vercelBlobToken) {
+        console.log(vercelBlobToken);
+        if (!vercelBlobToken || vercelBlobToken === "") {
           const fileName = req.file.filename;
           imageUrl = `/images/profile/${fileName}`;
         } else {
