@@ -388,7 +388,7 @@ export default function Userhome() {
                   <img
                     key={index}
                     className={`${userhome_style.catimg}`}
-                    src={`${process.env.REACT_APP_API_URL}/images/category/${data.image}`}
+                    src={data.image?.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/category/${data.image}`}
                     alt={data.categoryname}
                   />
                   <div
@@ -434,8 +434,8 @@ export default function Userhome() {
                         />
                       </div>
                       <img
-                        src={`${process.env.REACT_APP_API_URL}/images/product/${data.image}`}
-                        alt=""
+                        src={data.image?.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/product/${data.image}`}
+                        alt={data.productname}
                         className={`${userhome_style.proimg}`}
                       />
                     </div>
@@ -558,8 +558,8 @@ export default function Userhome() {
                         />
                       </div>
                       <img
-                        src={`${process.env.REACT_APP_API_URL}/images/product/${data.image}`}
-                        alt=""
+                        src={data.image?.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/product/${data.image}`}
+                        alt={data.productname}
                         className={`${userhome_style.proimg}`}
                       />
                     </div>

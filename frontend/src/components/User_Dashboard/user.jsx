@@ -195,7 +195,7 @@ export default function User() {
                   aria-expanded="false"
                 >
                   <img
-                    src={`${process.env.REACT_APP_API_URL}/images/profile/${userdata.image}`}
+                    src={userdata.image?.startsWith('https')?`${userdata.image}`:`${process.env.REACT_APP_API_URL}/images/profile/${userdata.image}`}
                     alt="hi"
                     className={`${user_style.img} rounded-circle`}
                   />
@@ -378,7 +378,7 @@ export default function User() {
                     .map((data, index) => (
                       <div key={index} className={user_style.favmain}>
                         <img
-                          src={data.image?.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/profile/${data.image}`}
+                          src={data.image?.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/product/${data.image}`}
                           alt={data.productname}
                           className={user_style.favimg}
                         />

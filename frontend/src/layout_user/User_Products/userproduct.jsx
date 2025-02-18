@@ -253,8 +253,8 @@ export default function Userproduct() {
                           />
                         </div>
                         <img
-                          src={`${process.env.REACT_APP_API_URL}/images/product/${product.image}`}
-                          alt=""
+                          src={product.image?.startsWith('https')?`${product.image}`:`${process.env.REACT_APP_API_URL}/images/product/${product.image}`}
+                          alt={product.productname}
                           className={`${userproduct_style.proimg}`}
                         />
                       </div>

@@ -201,7 +201,7 @@ export default function Usercart() {
                       <td style={{ fontWeight: "500" }}>{index + 1}</td>
                       <td>
                         <img
-                          src={`${process.env.REACT_APP_API_URL}/images/product/${data.image}`}
+                         src={data.image?.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/product/${data.image}`}
                           alt={data.productname}
                           className={`${usercart_style.cartimg}`}
                         />
