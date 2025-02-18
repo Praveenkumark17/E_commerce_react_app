@@ -378,7 +378,7 @@ export default function User() {
                     .map((data, index) => (
                       <div key={index} className={user_style.favmain}>
                         <img
-                          src={`${process.env.REACT_APP_API_URL}/images/product/${data.image}`}
+                          src={data.image?.startsWith('https')?`${data.image}`:`${process.env.REACT_APP_API_URL}/images/profile/${data.image}`}
                           alt={data.productname}
                           className={user_style.favimg}
                         />
