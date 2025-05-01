@@ -38,7 +38,7 @@ export default function Usercart() {
     const fetchcart = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/auth//getcartemail/${userdata.email}`
+          `${process.env.REACT_APP_API_URL}/api/auth/getcartemail/${userdata.email}`
         );
         console.log("cart fetched:", res.data);
         const cart = res.data;
