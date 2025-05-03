@@ -7,9 +7,7 @@ function App() {
   return (
     <>
       <div className={app_style.main}>
-        <DeviceCheck>
-          <Routerrs />
-        </DeviceCheck>
+        <Routerrs />
       </div>
     </>
   );
