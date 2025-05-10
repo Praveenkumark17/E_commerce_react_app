@@ -102,7 +102,7 @@ export default function Editcategory() {
         )
         .then((res) => {
           console.log(res.data);
-          toast.info("product updated", {
+          toast.info("Category updated", {
             position: "top-center",
             autoClose: 1000,
             hideProgressBar: true,
@@ -115,7 +115,7 @@ export default function Editcategory() {
         })
         .catch((err) => {
           console.log(err.data);
-          toast.error("product update failed", {
+          toast.error("Category update failed", {
             position: "top-center",
             autoClose: 1000,
             hideProgressBar: true,
