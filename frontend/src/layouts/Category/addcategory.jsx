@@ -49,9 +49,9 @@ export default function Addcategory() {
     e.preventDefault();
 
     const formDataToSend = new FormData();
-    Object.keys(formData).forEach((key) => {
+    for (const key in formData) {
       formDataToSend.append(key, formData[key]);
-    });
+    }
 
     try {
       await axios
