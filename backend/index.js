@@ -8,38 +8,54 @@ import bodyParser from "body-parser";
 config();
 const app = express();
 
-const allowedOrigins = [process.env.APP_URL || "http://localhost:3000", "https://e-commerce-client-swart.vercel.app"];
+// ✅ Define allowed origins
+const allowedOrigins = [
+  process.env.APP_URL || "http://localhost:3000",
+  "https://e-commerce-client-swart.vercel.app"
+];
 
+// ✅ CORS options with fallback for undefined origin (like Postman or server-to-server)
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log(`Blocked by CORS: ${origin}`);
       callback(new Error("Not allowed by CORS"));
     }
   },
   methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
   credentials: true,
-  optionsSuccessStatus: 200,
   allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 200,
 };
 
-// Apply CORS globally
+// ✅ Handle preflight requests explicitly
+app.options("*", cors(corsOptions));
+
+// ✅ Apply CORS middleware
 app.use(cors(corsOptions));
+
+// ✅ Parse incoming JSON
 app.use(express.json());
 app.use(bodyParser.json());
+
+// ✅ Connect to DB
 connectDB();
 
-// Serve static images
+// ✅ Serve static images
 app.use("/images", express.static("images"));
 
-// Authentication routes
+// ✅ Routes
 app.use("/api/auth", router);
 
-app.listen(5000, () => {
-  console.log(`Server running on port 5000`);
-  console.log(`Allowed Origins: ${allowedOrigins}`);
+// ✅ Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Allowed Origins: ${allowedOrigins.join(", ")}`);
 });
+
 
 
 
