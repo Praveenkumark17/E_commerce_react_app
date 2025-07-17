@@ -26,13 +26,9 @@ const corsOptions = {
 
 // Apply CORS globally
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
 connectDB();
-
-// Preflight handling for all routes
-app.options("*", cors(corsOptions));
 
 // Serve static images
 app.use("/images", express.static("images"));
